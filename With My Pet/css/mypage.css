@@ -1,0 +1,143 @@
+@charset "utf-8";
+
+*{
+    color: #1e3545;
+    margin: 0;
+    padding: 0;
+}
+#data{
+    max-width: 100%;
+    max-height: 100%;
+    margin: 2%
+}
+#data h2{
+    font-size: 3em;
+    margin-bottom: 1%;
+}
+#data ul{
+    list-style: none;
+}
+#data ul li{
+    font-size: 1.5em;
+    width: 100%;
+}
+#data ul li h3{
+    padding-top: 1%;
+}
+
+#modi{
+    margin-left: 2%;
+    font-size: 0.65em;
+}
+#data2 ul li h3>a{
+    font-size: 1em;
+
+}
+.my_sub{
+    padding: 1% 5%;
+    background-color: #e5d2b0;
+}
+/* ㅡㅡㅡㅡㅡ 즐겨찾기 + 방문기록 ㅡㅡㅡㅡㅡ */
+#f,#v{
+    display: flex;
+    margin: auto;
+    overflow-x: scroll;
+}
+
+/*******************************************************/
+/* y축은 width로 x축은 height로 컨트롤함. */
+#v::-webkit-scrollbar-track,
+#f::-webkit-scrollbar-track {
+    background-color: transparent; /* 배경색 투명으로 설정 */
+}
+  
+  /* 스크롤바 자체 */
+#v::-webkit-scrollbar,
+#f::-webkit-scrollbar {
+    /* width: 12px; */
+    /* 스크롤바 너비 */
+    height: 5px;
+}
+  
+  /* 스크롤바의 드래그 가능한 부분 (thumb) */
+#v::-webkit-scrollbar-thumb,
+#f::-webkit-scrollbar-thumb {
+    background-color: #888; /* thumb 색상 설정 */
+    border-radius: 10px; /* thumb의 모서리 둥글게 */
+}
+  
+  /* 스크롤바 버튼 (화살표 버튼) */
+#v::-webkit-scrollbar-button,
+#f::-webkit-scrollbar-button {
+    /* display: none;  */
+    /* 화살표 버튼 숨기기 */
+    width: 5px;
+    visibility: hidden;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*****************************************************/
+.favorite, .visited{
+    margin-right: 2%;
+    border: 1px solid;
+    position: relative;
+    flex: 1;
+    padding: 6%;
+    overflow: hidden;
+}
+.favorite h3, .visited h3{
+    font-size: calc(1px + 1vw);
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    background-color: #1e3545;
+    color: #ffffff;
+}
+.favorite>a, .visited>a{
+    font-size: 0.8em;
+}
+.favorite>a:last-of-type, .visited>a:last-of-type{
+   margin-right: 0;
+}
+
+.favorite a>img, .visited a>img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+}
+#qqna{
+    margin-top: 2%;
+    text-decoration: underline;
+}
+.favorite .red{
+  position: absolute;
+  top: 0;
+  right: 1%;
+  /* margin: 1%; */
+  z-index: 1;
+  color: #EA3323;
+  font-weight: bold;
+  font-size: 1.5em;
+}
