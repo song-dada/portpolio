@@ -1,0 +1,45 @@
+@charset "utf-8";
+
+#data{
+    max-width: 100%;
+    max-height: 100%;
+    margin: 2%;
+}
+
+#data>h2{
+    font-size: 2.5em;
+}
+#mainlogin{
+    display: flex;
+    margin: auto;
+    width: 70%;
+    margin-top: calc(1px + 15vh)
+}
+#in_login, #in_signin{
+    flex: 1;
+    margin: 0;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+#in_signin{
+    border-left: 2px dashed #1e3545 ;
+}
+
+#data table{
+    margin: auto;
+    padding: 10%;
+    height: 100%;
+}
+#data table th{
+    text-align: right;
+}
+#data table td{
+    padding: 3%;
+}
+#data table td>h3{
+    font-size: 2em;
+}
+#data table tr:last-of-type{
+    text-align: right;
+}
