@@ -1,0 +1,391 @@
+@charset "utf-8";
+
+:root{
+    --full-width: 100vw;
+}
+body{
+    background-color: #181818;
+    display: flex;
+    flex-direction: column;
+}
+body::-webkit-scrollbar{
+    display: none;
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+/* 헤더 */
+header{
+    width: var(--full-width);
+    height: calc(100vh - 26vh);
+}
+#logo{
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 1%;
+    max-width: 8%;
+}
+
+/* 메인 */
+/* main{
+    width: var(--full-width);
+    height: calc(100vh - 15vh - 10vh);
+} */
+/* 게임 모아둔 영역 */
+#gamearea{
+    max-width: 100%;
+    height: 100%;
+
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5%;
+}
+#gamearea .game{
+    /* flex: 1; */
+    height: 75%;
+    width: 7%;
+    margin: 15px;
+    /* background-color: #ffffff; */
+    border-radius: 15px;
+    transition: all 500ms;
+    overflow: hidden;
+}
+
+#gamearea:hover> .game:hover {
+    width: 35%;
+    margin: 15px;
+    background-color: rgb(255, 255, 255);
+}
+#gamearea:hover> .game:not(:hover){
+   opacity: 0.4;
+}
+.game:nth-of-type(odd){
+    transform: translateY(5%);
+}
+.game:nth-of-type(even){
+    transform: translateY(-5%);
+}
+
+.bg{
+    /* filter: blur(5px); */
+    opacity: 0.5;
+    width: 100%;
+    height: 90%;
+    z-index: -1;
+    background-repeat: no-repeat;
+    /* background-size: 100% 100%; */
+    background-size: cover;
+
+}
+.game:hover .bg,
+.game:hover .playicon{
+    /* filter: none; */
+    opacity: 1;
+}
+.playicon{
+    background-color: rgba(255, 255, 255, 1);
+    font-size: calc(2px + 8vw);
+    font-weight: bolder;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: all 1000ms;
+    padding: 15px;
+    line-height: 100%;
+}
+.block{
+    background-image: url(https://developer.mozilla.org/ko/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/mdn-breakout-gameplay.png);
+    background-position-x: 20%;
+}
+.maze{
+    background-image: url('../img/미로플레이.PNG');
+    background-position: 15% 50%;
+}
+.match{
+    background-image: url('../img/카드플레이.PNG');
+    background-position: 50%;
+}
+.game_text{
+    text-align: center;
+    height: 10%;
+    width: 100%;
+    color: #ffffff;
+    font-size: calc(1px + 1vw);
+    
+}
+.game:hover .game_text{
+    color: #000000;
+    font-size: calc(1px + 1.5vw);
+
+}
+.rank{
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}
+.rns1{
+    position: relative;
+    width: 20%;
+    background: linear-gradient( #3b01a7, #ffffff );
+}
+.rns1>img{
+    position: absolute;
+    width: 100%;
+    top: -10%;
+    left: 0;
+    transform: scale(1.2);
+}
+.ehd{
+    height: 30%;
+}
+.rma{
+    height: 70%;
+}
+.dms{
+    height: 45%;
+}
+
+.ansdml{
+    background-image: url('../img/메달/우편.svg');
+    background-repeat: repeat;
+    background-position: center;
+}
+
+
+/* 카테고리 */
+#category{
+    width: calc( var(--full-width) - 3vw);
+    height: calc(100vh - 80vh);
+    margin: auto;
+}
+#category_list{
+    display: flex;
+    gap: 2%;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+}
+.c_div{
+    width: 100%;
+    height: 100%;
+}
+.c_div> img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0px 0px 7px white);
+}
+.c_div> img:hover{
+    transition: all 500ms;
+    filter: drop-shadow(0px 0px 15px white);
+    transform: scale(1.2);
+}
+
+/* footer 카피라이트 영역 */
+footer{
+    width: var(--full-width);
+    height: calc(100vh - 94vh);
+    color: #ffffff;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    body{
+        flex-direction: column-reverse;
+    }
+    /* 헤더 */
+    /* header{
+        width: var(--full-width);
+        height: calc(100vh - 26vh);
+    } */
+    /* #logo{
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 1%;
+        max-width: 8%;
+    } */
+
+    /* 메인 */
+    /* main{
+        width: var(--full-width);
+        height: calc(100vh - 15vh - 10vh);
+    } */
+    /* 게임 모아둔 영역 */
+    #gamearea{
+        /* max-width: 100%;
+        height: 100%; */
+        /* display: flex; */
+        flex-direction: column-reverse;
+        flex-wrap: nowrap;
+    }
+    #gamearea .game{
+        /* flex: 1; */
+        /* height: 75%; */
+        width: 55%;
+        /* margin: 15px; */
+        /* background-color: #ffffff; */
+        /* border-radius: 15px; */
+        /* transition: all 500ms; */
+        /* overflow: hidden; */
+
+        
+    }
+    .game{
+        position: relative;
+    }
+    #gamearea:hover> .game:hover {
+        width: 65%;
+        /* margin: 15px;
+        background-color: rgb(255, 255, 255); */
+    }
+    /* #gamearea:hover> .game:not(:hover){
+    opacity: 0.4;
+    } */
+    /* .game:nth-of-type(odd){
+        transform: translateY(5%);
+    }
+    .game:nth-of-type(even){
+        transform: translateY(-5%);
+    } */
+
+    /* .bg{
+        opacity: 0.5;
+        width: 100%;
+        height: 90%;
+        z-index: -1;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .game:hover .bg,
+    .game:hover .playicon{
+        opacity: 1;
+    } */
+    /* .playicon{
+        background-color: rgba(255, 255, 255, 1);
+        font-size: calc(2px + 8vw);
+        font-weight: bolder;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: all 1000ms;
+        padding: 15px;
+        line-height: 100%;
+    } */
+    /* .block{
+        background-image: url(https://developer.mozilla.org/ko/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/mdn-breakout-gameplay.png);
+        background-position-x: 20%;
+    }
+    .maze{
+        background-image: url('../img/미로플레이.PNG');
+        background-position: 15% 50%;
+    }
+    .match{
+        background-image: url('../img/카드플레이.PNG');
+        background-position: 50%;
+    } */
+    .game_text{
+        /* text-align: center;
+        height: 10%;
+        width: 100%;
+        color: #ffffff;*/
+        font-size: calc(1px + 2.5vw); 
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        
+    }
+    .game:hover .game_text{
+        /* color: #000000;
+        font-size: calc(1px + 1.5vw); */
+        opacity: 0;
+
+    }
+    /* .rank{
+        display: flex;
+        align-items: end;
+        justify-content: center;
+    }
+    .rns1{
+        position: relative;
+        width: 20%;
+        background: linear-gradient( #3b01a7, #ffffff );
+    }
+    .rns1>img{
+        position: absolute;
+        width: 100%;
+        top: -10%;
+        left: 0;
+        transform: scale(1.2);
+    }
+    .ehd{
+        height: 30%;
+    }
+    .rma{
+        height: 70%;
+    }
+    .dms{
+        height: 45%;
+    } 
+
+    .ansdml{
+        background-image: url('../img/메달/우편.svg');
+        background-repeat: repeat;
+        background-position: center;
+    }*/
+
+
+    /* 카테고리 */
+    #category{
+        width: calc( var(--full-width) - 3vw);
+        height: calc(100vh - 82vh);
+        margin: auto;
+    }
+    /* #category_list{
+        display: flex;
+        gap: 2%;
+        justify-content: space-evenly;
+        width: 100%;
+        height: 100%;
+    } */
+    .c_div{
+        width: 100%;
+        height: 100%;
+    }
+    /* .c_div> img{
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: drop-shadow(0px 0px 7px white);
+    } */
+    .c_div> img:hover{
+        /* transition: all 500ms;
+        filter: drop-shadow(0px 0px 15px white); */
+        transform: scale(1.1); 
+    }
+
+    /* footer 카피라이트 영역 */
+    footer{
+        padding-top: 10px;
+        /* width: var(--full-width);
+        height: calc(100vh - 94vh);
+        color: #ffffff;
+        text-align: center; */
+    }
+    
+}

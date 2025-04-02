@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>블럭깨기</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color : #181818;
+        }
+        body{
+            background-color: #ccc;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #area{
+            background-color: #eee;
+            width: 80vw;
+            height: 80vh;
+            margin: auto;
+            margin-top: 20px;
+            display: block;
+        }
+        .inline{
+            display: inline-block;
+        }
+        .spece{
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="area">    </canvas>
+    <div>
+        <h2 id="score" class="inline"> Score : 0</h2> <span class="spece"> &nbsp; </span>
+        <h2 id="lives" class="inline"> Lives : 3</h2>
+
+    </div>
+    <p>
+        블럭 색상 : 
+        <input type="color" name="bricks" id="bricks_color" value="#2c2cfc">
+    </p>
+    <!-- <p>
+        패들 옵션 : <br/>
+        패들 색상 <input type="color" name="paddle" id="paddle_color">
+        패들 너비 : <input type="number" name="ball" id="paddle_width" min="40" max="50" value="30"><br>
+        패들 높이 : <input type="number" name="ball" id="paddle_height" min="5" max="10" value="8"><br>
+
+    </p> -->
+    <!-- <p>
+        공 옵션 : <br>
+        공 색상 : <input type="color" name="ball" id="ball_color"><br>
+        공 크기 : <input type="number" name="ball" id="ball_size"><br>
+    </p> -->
+    <button type="button" id="start">게임 시작하기 </button>
+
+    <script>
+        const canvas = document.getElementById('area');
+        const ctx = canvas.getContext('2d');
+
+        // 주석 모음
+        // rect( 시작 X좌표, 시작 Y좌표, X거리(너비), Y거리(높이))
+        // arc(시작 X좌표, 시작 Y좌표, 반지름, 시작각도, 종료각도, false); // false - 시계방향(default) / true - 반시계방향
+        // 시작각도 0은 X축을 기준으로 시작함. o - - - - - * o이 종료면 *에서 시작
+        // Math.PI / 4 = 45
+        // Math.PI / 2 = 90
+        // Math.PI (* 1) = 180
+        // Math.PI * 2 = 360
+        // ctx.rect(20,50,100,10);
+        // 부모(canvas)의 크기에 따라 %로 계산되나 봄. 캔버스가 커지니 그림도 커짐.
+        // fill(); - 안으로 채움 / stroke(); - 안을 채우지 않고 선만 남김
+        // 채우기 색(fillStyle). rgb/rgba/#000/색상명 다 됨
+        // 선 스타일(strokeStyle)
+
+        // //////////// 각도를 라디안으로 바꾸기 위해선 아래 코드가 있어야 댐 /////////////////
+        // const angleInDegrees = 90; // 원하는 각도
+        // const angleInRadians = angleInDegrees * (Math.PI / 180);
+
+        // ctx.beginPath();
+        // ctx.arc(100, 100, 20,  - (Math.PI / 2), Math.PI / 2, false)
+        // ctx.fillStyle = 'rgba(0, 0, 255, 0.7)';
+        // ctx.fill();
+        // ctx.strokeStyle = 'red';
+        // ctx.stroke();
+        // ctx.closePath();
+
+        // ------------------------------- 공 그리기
+
+        // let x, y, dx = 0.5, dy = -0.5, b_radius = 3;
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+
+        let x, y, dx = 2, dy = -2, b_radius = canvas.width % 10;
+
+        x = canvas.width / 2;
+        y = canvas.height - b_radius - 10 ;
+
+        const drawball = () => {
+            ctx.beginPath();
+            ctx.arc(x, y, b_radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgb( 0, 100, 255 )';
+            ctx.fill();
+            ctx.closePath();
+
+            // ------------------------------- 공 튀기기 
+            if( y + dy < 0 ){ // 위에 닿는다면
+                // if(y + dy >= canvas.height || y + dy < 0){
+                // y+dy가 캔버스의 높이보다 크면[= 바닥에 닿는다면.]
+                // y+dy가 0보다 작다면[=천장에 닿는다면.]
+                // 왼쪽위가 (0.0)이란 사실을 기억할 것.
+                dy = dy * (-1);
+            }
+            else if(y + dy > canvas.height + b_radius ){ //- b_radius
+                if (x > paddle_X && paddle_X + paddle_w > x){
+                    // x[= 공의 가로 축의 좌표]가 패들의 x축[=패들의 왼쪽 부분이 시작점]보다 값이크고
+                    // 패들의 x축+너비[=현재 패들의 영역] 보다 작은[=안에] 있을경우
+                    dy = dy * (-1);
+                    // 반대로 튕겨야 댐.
+                }
+                else{
+                    lives--;
+                    if(lives < 0){
+                        alert('Game Over!');
+                        // 게임 종료 안내를 띄우고
+                        document.location.reload();
+                        // 문서를 재 로딩 함(리셋)
+                        clearInterval(interval);
+                        // clearInterval(interval_p);
+                        // 반복을 종료 시킴
+                    }
+                    else{
+                        // 완전 초기값으로 돌림
+                        x = canvas.width / 2;
+                        y = canvas.height - b_radius - 10 ;
+                        dx = 2;
+                        dy = -2;
+                        paddle_X = (canvas.width - paddle_w) / 2;
+                    }
+                }
+            }
+            if(x + dx >= canvas.width || x + dx < 0){
+                dx = dx * (-1);
+            }
+            
+
+            // paddledraw();
+        };
+
+        const draw = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            //  ctx.clearRect(왼쪽 위 X, 왼쪽 위 Y, 오른쪽 아래 X, 오른쪽 아래 Y);
+            drawball();
+            x += dx;
+            y += dy;
+            // console.log(y);
+        };
+
+        
+
+
+        // ------------------- 막대 그리기
+        const paddle_h = 3; // 패들 높이
+        // const paddle_h = canvas.height % 10;
+        const paddle_w = 80; // 패들 너비
+        // const paddle_w = canvas.width*0.5 / 10;
+
+        let paddle_X = (canvas.width - paddle_w) / 2; // 패들의 시작 X축
+        // console.log('초기 패들의 X축 : ' + paddle_X);
+        
+        // const p_w = document.getElementById('paddle_width').value;
+        // const p_h = document.getElementById('paddle_height').value;
+        // p_w.addEventListener('change', ( e )=>{
+        //     p_w.value = e.target.value;
+        //     alert(p_w.value);
+        // });
+        // p_h.addEventListener('change', ( e )=>{
+        //     p_h.value = e.target.value;
+        //     alert(p_h.value);
+        // });
+
+
+        const paddledraw = () => {
+            ctx.beginPath();
+            ctx.rect( paddle_X, (canvas.height - paddle_h), paddle_w, paddle_h);
+            // ctx.rect( paddle_X, (canvas.height - p_h), p_w, p_h);
+            ctx.fillStyle = 'rgb( 0, 100, 255 )';
+            ctx.fill();
+            ctx.closePath();
+        };
+
+        // ------------------ 키보드 이벤트
+
+        const p_x = canvas.width / 100;
+        let rightkey_p = false, leftkey_p = false;
+        const keydown_h = ( event ) => { // console.log(event.key);
+            if( event.key === 'Right' || event.key === 'ArrowRight'){ // 오른쪽으로 이동
+                rightkey_p = true; // console.log('r-true');
+            } else if(event.key === 'Left' || event.key === 'ArrowLeft'){ // 왼쪽으로 이동
+                leftkey_p = true; // console.log('l-true');
+            }
+            rightkey_p ? paddle_X+=p_x : paddle_X-=p_x;
+            // console.log(paddle_X+', '+ rightkey_p);
+            if(rightkey_p){
+                paddle_X = Math.min(paddle_X+p_x, canvas.width - paddle_w);
+                // 작은 값으로 반환
+                // 패들 너비+7( 40+7 ) / 캔버스 너비-패들 너비
+                //  그냥 캔버스.width로 잡으면  캔버스 밖으로 나가버림
+                
+            } else if(leftkey_p){
+                paddle_X = Math.max(paddle_X-p_x, 0);
+                // 큰 값을 반환
+                // 패들 너비-7 (40-7) / 0
+            }
+            
+            
+        };
+        // 패들 이동에 미세 간격으로 ???????
+        const keyup_h = ( event ) => { // console.log(event.key);
+            if( event.key === 'Right' || event.key === 'ArrowRight'){
+                rightkey_p = false; // console.log('r-false');
+            } else if(event.key === 'Left' || event.key === 'ArrowLeft'){
+                leftkey_p = false; // console.log('l-false');
+            }
+        };
+
+        document.addEventListener("keydown", (e) => { keydown_h(e); });
+        document.addEventListener("keyup", (e) => { keyup_h(e); });
+
+        // ------------------- 벽돌 그리기
+        
+        // const brick_w = 30;
+        const brick_w = canvas.width / 15;
+        // const brick_h = 7;
+        const brick_h = canvas.height / 30;
+        // const brick_padding = 5;
+        const brick_padding = canvas.height / 100;
+        const brick_off_set_T = canvas.height / 100;
+        const brick_off_set_L = canvas.width / 100;
+        // off_set은 캔버스에 딱 붙게 그려지지 않도록 설정함.
+        const window_w = Math.trunc(canvas.width / (brick_w + brick_off_set_L));
+        const window_h = Math.trunc((canvas.height / 2) / (brick_h + brick_off_set_T));
+        // const window_h = canvas.height;
+        // const col_count = window_w;
+        const col_count = Math.floor(Math.random() * (window_w - 3) ) + 3;
+        const row_count = Math.floor(Math.random() * (window_h - 2) ) + 2;
+        // const row_count = window_h;
+
+        let bricks = [];
+        for (let c = 0; c < col_count; c++) {
+            bricks[c] = [];
+            for (let r = 0; r < row_count; r++) {
+                bricks[c][r] = { x:0, y:0, status: 1}
+            }                
+        }
+        const coll_detect = () => {
+            for (let c = 0; c < col_count; c++) {
+                for (let r = 0; r < row_count; r++) {
+                    const b = bricks[c][r];
+                    if (bricks[c][r].status === 1) {
+                        if( x > b.x && x < b.x + brick_w && y > b.y && y < b.y + brick_h){
+                            dy = dy * (-1);
+                            b.status = 0;
+                            score += 10;
+                            // console.log(score);
+                            
+                            // 점수를 넣음
+                            h1.textContent = `Score : ${score}`;
+                            if ((score/10) == (col_count * row_count)) {
+                                alert('You Win! Game Clear!');
+                                // 승리, 게임 종료 안내를 띄우고
+                                document.location.reload();
+                                // 문서를 재 로딩 함(리셋)
+                                clearInterval(interval);
+                            }
+                        }
+                    }
+                }                
+            }
+        };
+
+
+        // 점수 표기할 아이
+        const h1 = document.getElementById('score');
+        let score = 0;
+        const drawscore = () => {
+            ctx.font = '15px';
+            ctx.fillStyle = 'rgb( 0, 100, 255 )';
+            ctx.fillText(`Score : ${score}`, 5, canvas.height-10);
+        };
+
+        const b_c = document.getElementById('bricks_color');
+        const drawblock = () => {
+            for (let c = 0; c < col_count; c++) {
+                for (let r = 0; r < row_count; r++) {
+                    if (bricks[c][r].status === 1) {
+                        const brick_x = c * (brick_w + brick_padding) + brick_off_set_L;
+                        const brick_y = r * (brick_h + brick_padding) + brick_off_set_T;
+    
+                        bricks[c][r].x = brick_x;
+                        bricks[c][r].y = brick_y;
+                        ctx.beginPath();
+                        ctx.rect( brick_x, brick_y, brick_w, brick_h);
+                        ctx.fillStyle = b_c.value ;//'rgb( 0, 100, 255 )';
+                        ctx.fill();
+                        ctx.closePath();
+                    }
+                }                
+            }
+        };
+        // alert(b_c);
+        b_c.addEventListener('change', ( e )=>{
+            b_c.value = e.target.value;
+        })
+
+        // -------------시작 버튼을 누르면
+        const start = document.getElementById('start');
+        start.addEventListener('click', ()=>{
+            interval = 0;
+
+        interval = setInterval(() => {
+            draw();
+            paddledraw();
+            drawblock();
+            coll_detect(); 
+            drawscore();
+            drawlives();
+        }, 10);
+        })
+
+        // --------------------- 반복
+        // let interval = 0;
+
+        // interval = setInterval(() => {
+        //     draw();
+        //     paddledraw();
+        //     drawblock();
+        //     coll_detect(); 
+        //     drawscore();
+        //     drawlives();
+        // }, 10);
+
+        // 마우스로 이동하기
+
+        const mouse_h = ( e ) => {
+            const relativeX = e.clientX - canvas.offsetLeft;
+            // const relativeX = e.offsetY - canvas.offsetLeft;
+            if(relativeX > 0 && relativeX < canvas.width ){
+                paddle_X = relativeX - paddle_w / 2;
+                // paddle_X = e.clientX
+            }
+        };
+
+        document.addEventListener('mousemove', mouse_h, false);
+
+        // 플레이어 목숨
+        const h2 = document.getElementById('lives');
+
+        let lives = 3;
+        const drawlives =() => {
+            ctx.font = '15px';
+            ctx.fillStyle = 'rgb( 0, 100, 255 )';
+            ctx.fillText(`lives : ${lives}`, canvas.width - 100, 10);
+            h2.innerHTML = `lives : ${lives}`;
+        };
+
+    </script>
+</body>
+</html>
